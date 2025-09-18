@@ -423,6 +423,7 @@ export function ContentPanel({ currentState }: ContentPanelProps) {
           </SectionCard>
         )}
         {/* Market Section */}
+
         {currentState === "events-list" && (
           <SectionCard
             id="market"
@@ -551,6 +552,8 @@ export function ContentPanel({ currentState }: ContentPanelProps) {
             </div>
           </SectionCard>
         )}
+
+        {/* Payment Section */}
         {["payment", "payment-success"].includes(currentState) && (
           <SectionCard
             id="business"

@@ -58,7 +58,7 @@ export function StepNav({ currentState, onNavigate }: StepNavProps) {
   );
 
   return (
-    <div className="w-full max-w-4xl">
+    <div className="w-full py-10 max-w-4xl">
       <div className="mb-6">
         <div className="flex justify-between items-center mb-3">
           <span className="text-sm font-medium text-gray-700">
