@@ -1,14 +1,14 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Card } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Switch } from "@/components/ui/switch"
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Switch } from "@/components/ui/switch";
 import {
   ArrowLeft,
   ArrowRight,
@@ -31,8 +31,8 @@ import {
   Star,
   Filter,
   CheckCircle,
-} from "lucide-react"
-import type { AppState } from "@/lib/states"
+} from "lucide-react";
+import type { AppState } from "@/lib/states";
 import {
   mockEvents,
   mockJoinedEvents,
@@ -40,26 +40,29 @@ import {
   mockConversations,
   mockTestSteps,
   type ChatMessage,
-} from "@/lib/states"
+} from "@/lib/states";
 
 interface AppSimulatorProps {
-  state: AppState
-  onNavigate: (state: AppState) => void
+  state: AppState;
+  onNavigate: (state: AppState) => void;
 }
 
 export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
-  const [showPassword, setShowPassword] = useState(false)
-  const [chatMessages, setChatMessages] = useState<ChatMessage[]>(mockChatMessages)
-  const [newMessage, setNewMessage] = useState("")
-  const [selectedEvent, setSelectedEvent] = useState(mockEvents[0])
-  const [selectedConversation, setSelectedConversation] = useState(mockConversations[0])
-  const [currentTestStep, setCurrentTestStep] = useState(0)
-  const [testAnswers, setTestAnswers] = useState<Record<number, string>>({})
-  const [selectedLanguages, setSelectedLanguages] = useState<string[]>([])
-  const [selectedBudget, setSelectedBudget] = useState<number>(1)
-  const [isDiet, setIsDiet] = useState(false)
-  const [isPremium, setIsPremium] = useState(false)
-  const [showPremiumEvents, setShowPremiumEvents] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
+  const [chatMessages, setChatMessages] =
+    useState<ChatMessage[]>(mockChatMessages);
+  const [newMessage, setNewMessage] = useState("");
+  const [selectedEvent, setSelectedEvent] = useState(mockEvents[0]);
+  const [selectedConversation, setSelectedConversation] = useState(
+    mockConversations[0]
+  );
+  const [currentTestStep, setCurrentTestStep] = useState(0);
+  const [testAnswers, setTestAnswers] = useState<Record<number, string>>({});
+  const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
+  const [selectedBudget, setSelectedBudget] = useState<number>(1);
+  const [isDiet, setIsDiet] = useState(false);
+  const [isPremium, setIsPremium] = useState(false);
+  const [showPremiumEvents, setShowPremiumEvents] = useState(false);
 
   const handleSendMessage = () => {
     if (newMessage.trim()) {
@@ -67,48 +70,73 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
         id: Date.now().toString(),
         sender: "Sen",
         message: newMessage,
-        time: new Date().toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" }),
+        time: new Date().toLocaleTimeString("tr-TR", {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
         isOwn: true,
-      }
-      setChatMessages([...chatMessages, message])
-      setNewMessage("")
+      };
+      setChatMessages([...chatMessages, message]);
+      setNewMessage("");
     }
-  }
+  };
 
   const handleTestAnswer = (answer: string) => {
-    setTestAnswers({ ...testAnswers, [currentTestStep]: answer })
-  }
+    setTestAnswers({ ...testAnswers, [currentTestStep]: answer });
+  };
 
   const nextTestStep = () => {
     if (currentTestStep < mockTestSteps.length - 1) {
-      setCurrentTestStep(currentTestStep + 1)
+      setCurrentTestStep(currentTestStep + 1);
     } else {
       // Test completed, show matching animation
-      onNavigate("matching")
-      setTimeout(() => onNavigate("events-available"), 2000)
+      onNavigate("matching");
+      setTimeout(() => onNavigate("events-available"), 2000);
     }
-  }
+  };
 
   const prevTestStep = () => {
     if (currentTestStep > 0) {
-      setCurrentTestStep(currentTestStep - 1)
+      setCurrentTestStep(currentTestStep - 1);
     }
-  }
+  };
 
   const BottomTabBar = ({ activeTab }: { activeTab: string }) => (
     <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-2">
       <div className="flex justify-around">
         {[
-          { id: "home", icon: Home, label: "Ana Sayfa", state: "home" as AppState },
-          { id: "chat", icon: MessageCircle, label: "Sohbet", state: "chat-home" as AppState },
-          { id: "events", icon: Calendar, label: "Etkinlikler", state: "events-available" as AppState },
-          { id: "profile", icon: User, label: "Profil", state: "profile" as AppState },
+          {
+            id: "home",
+            icon: Home,
+            label: "Ana Sayfa",
+            state: "home" as AppState,
+          },
+          {
+            id: "chat",
+            icon: MessageCircle,
+            label: "Sohbet",
+            state: "chat-home" as AppState,
+          },
+          {
+            id: "events",
+            icon: Calendar,
+            label: "Etkinlikler",
+            state: "events-available" as AppState,
+          },
+          {
+            id: "profile",
+            icon: User,
+            label: "Profil",
+            state: "profile" as AppState,
+          },
         ].map((tab) => (
           <button
             key={tab.id}
             onClick={() => onNavigate(tab.state)}
             className={`flex flex-col items-center space-y-1 p-2 rounded-lg transition-all duration-200 ${
-              activeTab === tab.id ? "text-orange-600 bg-orange-50 scale-105" : "text-gray-500 hover:text-gray-700"
+              activeTab === tab.id
+                ? "text-orange-600 bg-orange-50 scale-105"
+                : "text-gray-500 hover:text-gray-700"
             }`}
           >
             <tab.icon size={20} />
@@ -117,13 +145,13 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
         ))}
       </div>
     </div>
-  )
+  );
 
   const pageVariants = {
     initial: { opacity: 0, x: 20 },
     animate: { opacity: 1, x: 0 },
     exit: { opacity: 0, x: -20 },
-  }
+  };
 
   return (
     <div className="w-full h-full bg-white relative overflow-hidden">
@@ -152,7 +180,9 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
                 <h1 className="text-2xl font-bold text-gray-900 leading-tight text-balance">
                   Haftalık beraberlik dozunuz.
                 </h1>
-                <p className="text-gray-600 text-sm text-balance">Yeni insanlarla tanışın, güzel sohbetler edin</p>
+                <p className="text-gray-600 text-sm text-balance">
+                  Yeni insanlarla tanışın, güzel sohbetler edin
+                </p>
                 <div className="space-y-3 w-full max-w-xs">
                   <Button
                     onClick={() => onNavigate("test-start")}
@@ -184,9 +214,12 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
                 <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Star size={40} className="text-blue-600" />
                 </div>
-                <h1 className="text-2xl font-bold text-gray-900 leading-tight text-balance">Sizi daha iyi tanıyalım</h1>
+                <h1 className="text-2xl font-bold text-gray-900 leading-tight text-balance">
+                  Sizi daha iyi tanıyalım
+                </h1>
                 <p className="text-gray-600 text-sm text-balance">
-                  Size en uygun masaları bulabilmemiz için birkaç soruya yanıt verin
+                  Size en uygun masaları bulabilmemiz için birkaç soruya yanıt
+                  verin
                 </p>
                 <Button
                   onClick={() => onNavigate("test-step")}
@@ -194,7 +227,11 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
                 >
                   Teste Başla
                 </Button>
-                <Button onClick={() => onNavigate("landing")} variant="ghost" className="w-full max-w-xs text-gray-500">
+                <Button
+                  onClick={() => onNavigate("landing")}
+                  variant="ghost"
+                  className="w-full max-w-xs text-gray-500"
+                >
                   Şimdi değil
                 </Button>
               </motion.div>
@@ -205,14 +242,22 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
           {state === "test-step" && (
             <div className="flex flex-col h-full">
               <div className="flex items-center p-6 border-b">
-                <Button variant="ghost" size="sm" onClick={() => onNavigate("test-start")}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => onNavigate("test-start")}
+                >
                   <ArrowLeft size={20} />
                 </Button>
                 <div className="flex-1 mx-4">
                   <div className="bg-gray-200 rounded-full h-2">
                     <div
                       className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-                      style={{ width: `${((currentTestStep + 1) / mockTestSteps.length) * 100}%` }}
+                      style={{
+                        width: `${
+                          ((currentTestStep + 1) / mockTestSteps.length) * 100
+                        }%`,
+                      }}
                     ></div>
                   </div>
                   <p className="text-sm text-gray-600 mt-2 text-center">
@@ -222,21 +267,31 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
               </div>
 
               <div className="flex-1 p-6">
-                <h1 className="text-xl font-bold text-gray-900 mb-6">{mockTestSteps[currentTestStep]?.question}</h1>
+                <h1 className="text-xl font-bold text-gray-900 mb-6">
+                  {mockTestSteps[currentTestStep]?.question}
+                </h1>
 
                 <div className="space-y-3">
-                  {mockTestSteps[currentTestStep]?.options.map((option, index) => (
-                    <Button
-                      key={index}
-                      variant={testAnswers[currentTestStep] === option ? "default" : "outline"}
-                      className={`w-full justify-start text-left h-auto p-4 ${
-                        testAnswers[currentTestStep] === option ? "bg-blue-600 hover:bg-blue-700" : "hover:bg-blue-50"
-                      }`}
-                      onClick={() => handleTestAnswer(option)}
-                    >
-                      {option}
-                    </Button>
-                  ))}
+                  {mockTestSteps[currentTestStep]?.options.map(
+                    (option, index) => (
+                      <Button
+                        key={index}
+                        variant={
+                          testAnswers[currentTestStep] === option
+                            ? "default"
+                            : "outline"
+                        }
+                        className={`w-full justify-start text-left h-auto p-4 ${
+                          testAnswers[currentTestStep] === option
+                            ? "bg-blue-600 hover:bg-blue-700"
+                            : "hover:bg-blue-50"
+                        }`}
+                        onClick={() => handleTestAnswer(option)}
+                      >
+                        {option}
+                      </Button>
+                    )
+                  )}
                 </div>
               </div>
 
@@ -255,7 +310,9 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
                   disabled={!testAnswers[currentTestStep]}
                   className="bg-blue-600 hover:bg-blue-700 flex items-center"
                 >
-                  {currentTestStep === mockTestSteps.length - 1 ? "Bitir" : "İleri"}
+                  {currentTestStep === mockTestSteps.length - 1
+                    ? "Bitir"
+                    : "İleri"}
                   <ArrowRight size={16} className="ml-2" />
                 </Button>
               </div>
@@ -279,7 +336,9 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
 
               <div className="flex-1 space-y-4">
                 <div>
-                  <label className="text-sm font-medium text-gray-700">E-posta</label>
+                  <label className="text-sm font-medium text-gray-700">
+                    E-posta
+                  </label>
                   <Input
                     type="email"
                     placeholder="ornek@email.com"
@@ -288,7 +347,9 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
                 </div>
 
                 <div>
-                  <label className="text-sm font-medium text-gray-700">Şifre</label>
+                  <label className="text-sm font-medium text-gray-700">
+                    Şifre
+                  </label>
                   <div className="relative mt-1">
                     <Input
                       type={showPassword ? "text" : "password"}
@@ -318,7 +379,11 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
           {state === "register" && (
             <div className="flex flex-col h-full p-6">
               <div className="flex items-center mb-6">
-                <Button variant="ghost" size="sm" onClick={() => onNavigate("landing")}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => onNavigate("landing")}
+                >
                   <ArrowLeft size={20} />
                 </Button>
                 <h1 className="text-xl font-semibold ml-4">Kayıt Ol</h1>
@@ -326,19 +391,32 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
 
               <div className="flex-1 space-y-4">
                 <div>
-                  <label className="text-sm font-medium text-gray-700">Ad Soyad</label>
+                  <label className="text-sm font-medium text-gray-700">
+                    Ad Soyad
+                  </label>
                   <Input placeholder="Adınız Soyadınız" className="mt-1" />
                 </div>
 
                 <div>
-                  <label className="text-sm font-medium text-gray-700">E-posta</label>
-                  <Input type="email" placeholder="ornek@email.com" className="mt-1" />
+                  <label className="text-sm font-medium text-gray-700">
+                    E-posta
+                  </label>
+                  <Input
+                    type="email"
+                    placeholder="ornek@email.com"
+                    className="mt-1"
+                  />
                 </div>
 
                 <div>
-                  <label className="text-sm font-medium text-gray-700">Şifre</label>
+                  <label className="text-sm font-medium text-gray-700">
+                    Şifre
+                  </label>
                   <div className="relative mt-1">
-                    <Input type={showPassword ? "text" : "password"} placeholder="••••••••" />
+                    <Input
+                      type={showPassword ? "text" : "password"}
+                      placeholder="••••••••"
+                    />
                     <button
                       onClick={() => setShowPassword(!showPassword)}
                       className="absolute right-3 top-1/2 transform -translate-y-1/2"
@@ -348,7 +426,10 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
                   </div>
                 </div>
 
-                <Button onClick={() => onNavigate("home")} className="w-full bg-orange-600 hover:bg-orange-700 mt-6">
+                <Button
+                  onClick={() => onNavigate("home")}
+                  className="w-full bg-orange-600 hover:bg-orange-700 mt-6"
+                >
                   Kayıt Ol
                 </Button>
               </div>
@@ -361,8 +442,14 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
               <div className="flex-1 p-6 pb-20">
                 <div className="space-y-6">
                   <div className="flex items-center justify-between">
-                    <h1 className="text-2xl font-bold text-gray-900">Merhaba Ayşe 👋</h1>
-                    <Button variant="ghost" size="sm" onClick={() => onNavigate("notifications")}>
+                    <h1 className="text-2xl font-bold text-gray-900">
+                      Merhaba Ayşe 👋
+                    </h1>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => onNavigate("notifications")}
+                    >
                       <Bell size={20} />
                     </Button>
                   </div>
@@ -370,21 +457,27 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
                   <div className="flex items-center space-x-2">
                     <MapPin size={16} className="text-gray-500" />
                     <span className="text-gray-700">İzmir</span>
-                    <Button variant="ghost" size="sm" className="text-orange-600">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-orange-600"
+                    >
                       değiştir
                     </Button>
                   </div>
 
                   <div>
-                    <h2 className="text-lg font-semibold text-gray-900 mb-4">Katılabileceğin Yemekler</h2>
+                    <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                      Katılabileceğin Yemekler
+                    </h2>
                     <div className="space-y-3">
                       {mockEvents.slice(0, 3).map((event) => (
                         <Card
                           key={event.id}
                           className="p-4 cursor-pointer hover:shadow-md transition-shadow"
                           onClick={() => {
-                            setSelectedEvent(event)
-                            onNavigate("event-detail")
+                            setSelectedEvent(event);
+                            onNavigate("event-detail");
                           }}
                         >
                           <div className="flex justify-between items-center">
@@ -401,7 +494,9 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
                               </div>
                             </div>
                             <div className="text-right">
-                              <p className="font-semibold text-orange-600">{event.price}</p>
+                              <p className="font-semibold text-orange-600">
+                                {event.price}
+                              </p>
                             </div>
                           </div>
                         </Card>
@@ -426,7 +521,9 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
             <div className="flex flex-col h-full">
               <div className="flex-1 p-6 pb-20">
                 <div className="flex items-center justify-between mb-6">
-                  <h1 className="text-2xl font-bold text-gray-900">Etkinlikler</h1>
+                  <h1 className="text-2xl font-bold text-gray-900">
+                    Etkinlikler
+                  </h1>
                   <div className="flex items-center space-x-2">
                     {isPremium && (
                       <Button
@@ -453,15 +550,19 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
                         key={event.id}
                         className="p-4 cursor-pointer hover:shadow-md transition-shadow"
                         onClick={() => {
-                          setSelectedEvent(event)
-                          onNavigate("event-detail")
+                          setSelectedEvent(event);
+                          onNavigate("event-detail");
                         }}
                       >
                         <div className="flex justify-between items-start mb-2">
                           <div className="flex-1">
                             <div className="flex items-center space-x-2 mb-2">
-                              <h3 className="font-semibold text-gray-900">{event.title}</h3>
-                              {event.isPremium && <Crown size={16} className="text-yellow-600" />}
+                              <h3 className="font-semibold text-gray-900">
+                                {event.title}
+                              </h3>
+                              {event.isPremium && (
+                                <Crown size={16} className="text-yellow-600" />
+                              )}
                             </div>
                             <div className="flex items-center space-x-4 text-sm text-gray-600">
                               <span className="flex items-center">
@@ -485,15 +586,17 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
                                   event.badge === "Son koltuklar"
                                     ? "destructive"
                                     : event.badge === "Premium"
-                                      ? "secondary"
-                                      : "outline"
+                                    ? "secondary"
+                                    : "outline"
                                 }
                                 className="mb-2"
                               >
                                 {event.badge}
                               </Badge>
                             )}
-                            <p className="font-semibold text-orange-600">{event.price}</p>
+                            <p className="font-semibold text-orange-600">
+                              {event.price}
+                            </p>
                           </div>
                         </div>
                       </Card>
@@ -508,7 +611,11 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
           {state === "events-joined" && (
             <div className="flex flex-col h-full">
               <div className="flex items-center p-6 border-b">
-                <Button variant="ghost" size="sm" onClick={() => onNavigate("events-available")}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => onNavigate("events-available")}
+                >
                   <ArrowLeft size={20} />
                 </Button>
                 <h1 className="text-xl font-semibold ml-4">Kayıt Oldukların</h1>
@@ -520,7 +627,9 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
                     <Card key={event.id} className="p-4">
                       <div className="flex justify-between items-start mb-3">
                         <div className="flex-1">
-                          <h3 className="font-semibold text-gray-900 mb-1">{event.title}</h3>
+                          <h3 className="font-semibold text-gray-900 mb-1">
+                            {event.title}
+                          </h3>
                           <div className="flex items-center space-x-4 text-sm text-gray-600 mb-2">
                             <span className="flex items-center">
                               <Calendar size={14} className="mr-1" />
@@ -531,18 +640,26 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
                               {event.time}
                             </span>
                           </div>
-                          <p className="text-sm text-gray-600">{event.restaurant}</p>
+                          <p className="text-sm text-gray-600">
+                            {event.restaurant}
+                          </p>
                         </div>
                         <Badge variant="secondary">Kayıtlı</Badge>
                       </div>
 
                       <div className="flex items-center space-x-2 mb-3">
                         <Users size={16} className="text-gray-500" />
-                        <span className="text-sm text-gray-600">{event.participants?.join(", ")}</span>
+                        <span className="text-sm text-gray-600">
+                          {event.participants?.join(", ")}
+                        </span>
                       </div>
 
                       <div className="flex space-x-2">
-                        <Button size="sm" onClick={() => onNavigate("chat-home")} className="flex items-center">
+                        <Button
+                          size="sm"
+                          onClick={() => onNavigate("chat-home")}
+                          className="flex items-center"
+                        >
                           <MessageCircle size={16} className="mr-1" />
                           Sohbet
                         </Button>
@@ -575,7 +692,9 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
 
                 <div className="p-6 space-y-6">
                   <div>
-                    <h1 className="text-2xl font-bold text-gray-900 mb-2">{selectedEvent.title}</h1>
+                    <h1 className="text-2xl font-bold text-gray-900 mb-2">
+                      {selectedEvent.title}
+                    </h1>
                     <div className="flex items-center space-x-4 text-gray-600">
                       <span className="flex items-center">
                         <Calendar size={16} className="mr-2" />
@@ -584,20 +703,27 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
                     </div>
                     <div className="flex items-center mt-2">
                       <MapPin size={16} className="mr-2 text-gray-600" />
-                      <span className="text-gray-600">{selectedEvent.location}</span>
+                      <span className="text-gray-600">
+                        {selectedEvent.location}
+                      </span>
                     </div>
                   </div>
 
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-2">Açıklama</h3>
+                    <h3 className="font-semibold text-gray-900 mb-2">
+                      Açıklama
+                    </h3>
                     <p className="text-gray-600 text-sm">
-                      6 kişilik samimi bir akşam yemeği. Yeni insanlarla tanışın, güzel sohbetler edin ve lezzetli
-                      yemeklerin tadını çıkarın.
+                      6 kişilik samimi bir akşam yemeği. Yeni insanlarla
+                      tanışın, güzel sohbetler edin ve lezzetli yemeklerin
+                      tadını çıkarın.
                     </p>
                   </div>
 
                   <Card className="p-4 bg-orange-50 border-orange-200">
-                    <h3 className="font-semibold text-gray-900 mb-4">Etkinliğe katıl</h3>
+                    <h3 className="font-semibold text-gray-900 mb-4">
+                      Etkinliğe katıl
+                    </h3>
 
                     <div className="space-y-4">
                       <div>
@@ -606,19 +732,32 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
                         </label>
                         <div className="space-y-2">
                           {["Türkçe", "İngilizce", "Rusça"].map((language) => (
-                            <div key={language} className="flex items-center space-x-2">
+                            <div
+                              key={language}
+                              className="flex items-center space-x-2"
+                            >
                               <Checkbox
                                 id={language}
                                 checked={selectedLanguages.includes(language)}
                                 onCheckedChange={(checked) => {
                                   if (checked) {
-                                    setSelectedLanguages([...selectedLanguages, language])
+                                    setSelectedLanguages([
+                                      ...selectedLanguages,
+                                      language,
+                                    ]);
                                   } else {
-                                    setSelectedLanguages(selectedLanguages.filter((l) => l !== language))
+                                    setSelectedLanguages(
+                                      selectedLanguages.filter(
+                                        (l) => l !== language
+                                      )
+                                    );
                                   }
                                 }}
                               />
-                              <label htmlFor={language} className="text-sm text-gray-700">
+                              <label
+                                htmlFor={language}
+                                className="text-sm text-gray-700"
+                              >
                                 {language}
                               </label>
                             </div>
@@ -643,7 +782,11 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
                             >
                               <div className="flex items-center space-x-2">
                                 {Array.from({ length: level }, (_, i) => (
-                                  <DollarSign key={i} size={16} className="text-green-600" />
+                                  <DollarSign
+                                    key={i}
+                                    size={16}
+                                    className="text-green-600"
+                                  />
                                 ))}
                               </div>
                               <div className="text-sm text-gray-600">
@@ -657,16 +800,27 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
                       </div>
 
                       <div className="flex items-center justify-between">
-                        <label htmlFor="diet" className="text-sm font-medium text-gray-700">
+                        <label
+                          htmlFor="diet"
+                          className="text-sm font-medium text-gray-700"
+                        >
                           Diyet yapıyorum
                         </label>
-                        <Switch id="diet" checked={isDiet} onCheckedChange={setIsDiet} />
+                        <Switch
+                          id="diet"
+                          checked={isDiet}
+                          onCheckedChange={setIsDiet}
+                        />
                       </div>
 
                       <div className="border-t pt-4">
                         <div className="flex items-center justify-between mb-3">
-                          <span className="text-sm font-medium text-gray-700">Koltuk ücreti</span>
-                          <span className="text-lg font-bold text-orange-600">{selectedEvent.price}</span>
+                          <span className="text-sm font-medium text-gray-700">
+                            Koltuk ücreti
+                          </span>
+                          <span className="text-lg font-bold text-orange-600">
+                            {selectedEvent.price}
+                          </span>
                         </div>
                         <Button
                           onClick={() => onNavigate("payment")}
@@ -679,7 +833,9 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
                   </Card>
 
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-2">Kurallar</h3>
+                    <h3 className="font-semibold text-gray-900 mb-2">
+                      Kurallar
+                    </h3>
                     <ul className="text-sm text-gray-600 space-y-1">
                       <li>• Zamanında gelmeye özen gösterin</li>
                       <li>• Telefon kullanımını minimumda tutun</li>
@@ -688,7 +844,9 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
                   </div>
 
                   <div className="h-32 bg-gray-100 rounded-lg flex items-center justify-center">
-                    <span className="text-gray-500 text-sm">Harita Placeholder</span>
+                    <span className="text-gray-500 text-sm">
+                      Harita Placeholder
+                    </span>
                   </div>
                 </div>
               </div>
@@ -698,44 +856,62 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
           {/* Payment Screen */}
           {state === "payment" && (
             <div className="flex flex-col h-full">
+              {/* Header */}
               <div className="flex items-center p-6 border-b">
-                <Button variant="ghost" size="sm" onClick={() => onNavigate("event-detail")}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => onNavigate("event-detail")}
+                >
                   <ArrowLeft size={20} />
                 </Button>
                 <h1 className="text-xl font-semibold ml-4">Ödeme</h1>
               </div>
 
-              <div className="flex-1 p-6 space-y-6">
+              {/* Scrollable Content */}
+              <div className="flex-1 overflow-y-auto p-6 space-y-6">
                 <Card className="p-4">
                   <h3 className="font-semibold mb-2">{selectedEvent.title}</h3>
                   <p className="text-sm text-gray-600">
                     {selectedEvent.date} - {selectedEvent.time}
                   </p>
-                  <p className="text-sm text-gray-600">{selectedEvent.location}</p>
+                  <p className="text-sm text-gray-600">
+                    {selectedEvent.location}
+                  </p>
                   <div className="flex justify-between items-center mt-4 pt-4 border-t">
                     <span className="font-semibold">Toplam</span>
-                    <span className="text-xl font-bold text-orange-600">{selectedEvent.price}</span>
+                    <span className="text-xl font-bold text-orange-600">
+                      {selectedEvent.price}
+                    </span>
                   </div>
                 </Card>
 
                 <div className="space-y-4">
                   <div>
-                    <label className="text-sm font-medium text-gray-700">Kart Üzerindeki İsim</label>
+                    <label className="text-sm font-medium text-gray-700">
+                      Kart Üzerindeki İsim
+                    </label>
                     <Input placeholder="AYŞE YILMAZ" className="mt-1" />
                   </div>
 
                   <div>
-                    <label className="text-sm font-medium text-gray-700">Kart Numarası</label>
+                    <label className="text-sm font-medium text-gray-700">
+                      Kart Numarası
+                    </label>
                     <Input placeholder="1234 5678 9012 3456" className="mt-1" />
                   </div>
 
                   <div className="flex space-x-4">
                     <div className="flex-1">
-                      <label className="text-sm font-medium text-gray-700">SKT</label>
+                      <label className="text-sm font-medium text-gray-700">
+                        SKT
+                      </label>
                       <Input placeholder="12/25" className="mt-1" />
                     </div>
                     <div className="flex-1">
-                      <label className="text-sm font-medium text-gray-700">CVC</label>
+                      <label className="text-sm font-medium text-gray-700">
+                        CVC
+                      </label>
                       <Input placeholder="123" className="mt-1" />
                     </div>
                   </div>
@@ -749,7 +925,8 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
                 </div>
               </div>
 
-              <div className="p-6 border-t">
+              {/* Footer / Sabit Buton */}
+              <div className="p-6 border-t bg-white sticky bottom-0">
                 <Button
                   onClick={() => onNavigate("payment-success")}
                   className="w-full bg-orange-600 hover:bg-orange-700"
@@ -762,14 +939,18 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
 
           {state === "payment-success" && (
             <div className="flex flex-col h-full">
-              <div className="flex-1 p-6">
+              {/* Scrollable Content */}
+              <div className="flex-1 overflow-y-auto p-6">
                 <div className="text-center mb-8">
                   <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <CheckCircle size={40} className="text-green-600" />
                   </div>
-                  <h1 className="text-2xl font-bold text-gray-900 mb-2">Ödeme başarılı</h1>
+                  <h1 className="text-2xl font-bold text-gray-900 mb-2">
+                    Ödeme başarılı
+                  </h1>
                   <p className="text-gray-600 text-sm">
-                    Rezervasyonunuz onaylandı. Restoran ve katılımcılar şimdi görünür.
+                    Rezervasyonunuz onaylandı. Restoran ve katılımcılar şimdi
+                    görünür.
                   </p>
                 </div>
 
@@ -787,32 +968,42 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
                   </div>
 
                   <div className="border-t pt-3">
-                    <h4 className="font-medium text-gray-900 mb-2">Katılımcılar</h4>
+                    <h4 className="font-medium text-gray-900 mb-2">
+                      Katılımcılar
+                    </h4>
                     <div className="flex items-center space-x-2">
                       <Users size={16} className="text-gray-500" />
                       <span className="text-sm text-gray-600">
-                        {selectedEvent.participants?.join(", ") || "Mehmet K., Ayşe D., Can Y."}
+                        {selectedEvent.participants?.join(", ") ||
+                          "Mehmet K., Ayşe D., Can Y."}
                       </span>
                     </div>
                   </div>
 
                   <div className="h-32 bg-gray-100 rounded-lg flex items-center justify-center mt-4">
-                    <span className="text-gray-500 text-sm">Restoran Haritası</span>
+                    <span className="text-gray-500 text-sm">
+                      Restoran Haritası
+                    </span>
                   </div>
                 </Card>
+              </div>
 
-                <div className="space-y-3">
-                  <Button
-                    onClick={() => onNavigate("chat-home")}
-                    className="w-full bg-orange-600 hover:bg-orange-700 flex items-center justify-center"
-                  >
-                    <MessageCircle size={16} className="mr-2" />
-                    Sohbeti aç
-                  </Button>
-                  <Button variant="outline" onClick={() => onNavigate("event-detail")} className="w-full">
-                    Etkinlik detayına dön
-                  </Button>
-                </div>
+              {/* Footer / Sabit Butonlar */}
+              <div className="p-6 border-t bg-white sticky bottom-0 space-y-3">
+                <Button
+                  onClick={() => onNavigate("chat-home")}
+                  className="w-full bg-orange-600 hover:bg-orange-700 flex items-center justify-center"
+                >
+                  <MessageCircle size={16} className="mr-2" />
+                  Sohbeti aç
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => onNavigate("event-detail")}
+                  className="w-full"
+                >
+                  Etkinlik detayına dön
+                </Button>
               </div>
             </div>
           )}
@@ -824,13 +1015,19 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
                 <Users size={40} className="text-green-600" />
               </div>
 
-              <h1 className="text-2xl font-bold text-gray-900 mb-4">Diğer 5 katılımcının olduğu bir masa bulundu!</h1>
+              <h1 className="text-2xl font-bold text-gray-900 mb-4">
+                Diğer 5 katılımcının olduğu bir masa bulundu!
+              </h1>
 
               <p className="text-gray-600 mb-8 text-center">
-                Rezervasyonunuz onaylandı. Diğer katılımcılarla sohbet etmeye başlayabilirsiniz.
+                Rezervasyonunuz onaylandı. Diğer katılımcılarla sohbet etmeye
+                başlayabilirsiniz.
               </p>
 
-              <Button onClick={() => onNavigate("chat-home")} className="bg-orange-600 hover:bg-orange-700">
+              <Button
+                onClick={() => onNavigate("chat-home")}
+                className="bg-orange-600 hover:bg-orange-700"
+              >
                 Sohbete katıl
               </Button>
             </div>
@@ -841,7 +1038,9 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
             <div className="flex flex-col h-full">
               <div className="p-4 border-b bg-white">
                 <h1 className="text-lg font-semibold text-center">Sohbetler</h1>
-                <p className="text-sm text-gray-600 text-center">Aktif konuşmalar</p>
+                <p className="text-sm text-gray-600 text-center">
+                  Aktif konuşmalar
+                </p>
               </div>
 
               <div className="flex-1 overflow-y-auto p-4 space-y-4 pb-20">
@@ -854,8 +1053,8 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
                       transition={{ delay: 0.1 }}
                       className="cursor-pointer"
                       onClick={() => {
-                        setSelectedConversation(conversation)
-                        onNavigate("chat")
+                        setSelectedConversation(conversation);
+                        onNavigate("chat");
                       }}
                     >
                       <Card className="p-4 hover:shadow-md transition-shadow">
@@ -867,12 +1066,20 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
                           </Avatar>
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between mb-1">
-                              <h3 className="text-sm font-semibold text-gray-900 truncate">{conversation.title}</h3>
-                              <span className="text-xs text-gray-500">{conversation.time}</span>
+                              <h3 className="text-sm font-semibold text-gray-900 truncate">
+                                {conversation.title}
+                              </h3>
+                              <span className="text-xs text-gray-500">
+                                {conversation.time}
+                              </span>
                             </div>
-                            <p className="text-xs text-gray-600 truncate">{conversation.lastMessage}</p>
+                            <p className="text-xs text-gray-600 truncate">
+                              {conversation.lastMessage}
+                            </p>
                             {conversation.eventTitle && (
-                              <p className="text-xs text-orange-600 mt-1">{conversation.eventTitle}</p>
+                              <p className="text-xs text-orange-600 mt-1">
+                                {conversation.eventTitle}
+                              </p>
                             )}
                           </div>
                           <div className="flex items-center space-x-2">
@@ -898,11 +1105,17 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
           {state === "chat" && (
             <div className="flex flex-col h-full">
               <div className="flex items-center p-4 border-b bg-white">
-                <Button variant="ghost" size="sm" onClick={() => onNavigate("chat-home")}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => onNavigate("chat-home")}
+                >
                   <ArrowLeft size={20} />
                 </Button>
                 <div className="flex-1 text-center">
-                  <h1 className="text-lg font-semibold">{selectedConversation.title}</h1>
+                  <h1 className="text-lg font-semibold">
+                    {selectedConversation.title}
+                  </h1>
                   <p className="text-sm text-gray-600">6 katılımcı • Aktif</p>
                 </div>
                 <Button variant="ghost" size="sm">
@@ -918,19 +1131,33 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.1 }}
-                      className={`flex ${message.isOwn ? "justify-end" : "justify-start"}`}
+                      className={`flex ${
+                        message.isOwn ? "justify-end" : "justify-start"
+                      }`}
                     >
-                      <div className={`max-w-xs ${message.isOwn ? "order-2" : "order-1"}`}>
-                        {!message.isOwn && <p className="text-xs text-gray-500 mb-1">{message.sender}</p>}
+                      <div
+                        className={`max-w-xs ${
+                          message.isOwn ? "order-2" : "order-1"
+                        }`}
+                      >
+                        {!message.isOwn && (
+                          <p className="text-xs text-gray-500 mb-1">
+                            {message.sender}
+                          </p>
+                        )}
                         <motion.div
                           className={`p-3 rounded-2xl transition-all duration-200 ${
-                            message.isOwn ? "bg-orange-600 text-white" : "bg-gray-100 text-gray-900 hover:bg-gray-200"
+                            message.isOwn
+                              ? "bg-orange-600 text-white"
+                              : "bg-gray-100 text-gray-900 hover:bg-gray-200"
                           }`}
                           whileHover={{ scale: 1.02 }}
                         >
                           <p className="text-sm">{message.message}</p>
                         </motion.div>
-                        <p className="text-xs text-gray-500 mt-1 text-right">{message.time}</p>
+                        <p className="text-xs text-gray-500 mt-1 text-right">
+                          {message.time}
+                        </p>
                       </div>
                     </motion.div>
                   ))}
@@ -965,11 +1192,17 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
               <div className="flex-1 p-6 pb-20">
                 <div className="text-center mb-8">
                   <Avatar className="w-24 h-24 mx-auto mb-4">
-                    <AvatarFallback className="text-2xl bg-orange-100 text-orange-600">AY</AvatarFallback>
+                    <AvatarFallback className="text-2xl bg-orange-100 text-orange-600">
+                      AY
+                    </AvatarFallback>
                   </Avatar>
                   <div className="flex items-center justify-center space-x-2">
-                    <h1 className="text-2xl font-bold text-gray-900">Ayşe Yılmaz</h1>
-                    {isPremium && <Crown size={20} className="text-yellow-600" />}
+                    <h1 className="text-2xl font-bold text-gray-900">
+                      Ayşe Yılmaz
+                    </h1>
+                    {isPremium && (
+                      <Crown size={20} className="text-yellow-600" />
+                    )}
                   </div>
                   <p className="text-gray-600">İzmir</p>
                   {isPremium && (
@@ -1009,7 +1242,11 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
                     </Button>
                   )}
 
-                  <Button variant="ghost" className="w-full justify-between" onClick={() => onNavigate("settings")}>
+                  <Button
+                    variant="ghost"
+                    className="w-full justify-between"
+                    onClick={() => onNavigate("settings")}
+                  >
                     <div className="flex items-center">
                       <Settings size={20} className="mr-3" />
                       <span>Ayarlar</span>
@@ -1042,7 +1279,11 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
           {state === "settings" && (
             <div className="flex flex-col h-full">
               <div className="flex items-center p-6 border-b">
-                <Button variant="ghost" size="sm" onClick={() => onNavigate("profile")}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => onNavigate("profile")}
+                >
                   <ArrowLeft size={20} />
                 </Button>
                 <h1 className="text-xl font-semibold ml-4">Ayarlar</h1>
@@ -1062,7 +1303,11 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
                     <ChevronRight size={16} />
                   </Button>
 
-                  <Button variant="ghost" className="w-full justify-between" onClick={() => onNavigate("privacy")}>
+                  <Button
+                    variant="ghost"
+                    className="w-full justify-between"
+                    onClick={() => onNavigate("privacy")}
+                  >
                     <div className="flex items-center">
                       <Shield size={20} className="mr-3" />
                       <span>Gizlilik</span>
@@ -1078,7 +1323,11 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
           {state === "notifications" && (
             <div className="flex flex-col h-full">
               <div className="flex items-center p-6 border-b">
-                <Button variant="ghost" size="sm" onClick={() => onNavigate("settings")}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => onNavigate("settings")}
+                >
                   <ArrowLeft size={20} />
                 </Button>
                 <h1 className="text-xl font-semibold ml-4">Bildirimler</h1>
@@ -1107,7 +1356,11 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
           {state === "privacy" && (
             <div className="flex flex-col h-full">
               <div className="flex items-center p-6 border-b">
-                <Button variant="ghost" size="sm" onClick={() => onNavigate("settings")}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => onNavigate("settings")}
+                >
                   <ArrowLeft size={20} />
                 </Button>
                 <h1 className="text-xl font-semibold ml-4">Gizlilik</h1>
@@ -1117,14 +1370,25 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
                 <div className="space-y-4">
                   <div>
                     <h3 className="font-semibold mb-2">Profil Görünürlüğü</h3>
-                    <p className="text-sm text-gray-600 mb-4">Profilinizi kimler görebilir?</p>
+                    <p className="text-sm text-gray-600 mb-4">
+                      Profilinizi kimler görebilir?
+                    </p>
                     <div className="space-y-2">
                       <label className="flex items-center">
-                        <input type="radio" name="visibility" className="mr-2" defaultChecked />
+                        <input
+                          type="radio"
+                          name="visibility"
+                          className="mr-2"
+                          defaultChecked
+                        />
                         <span>Sadece eşleştiğim kişiler</span>
                       </label>
                       <label className="flex items-center">
-                        <input type="radio" name="visibility" className="mr-2" />
+                        <input
+                          type="radio"
+                          name="visibility"
+                          className="mr-2"
+                        />
                         <span>Tüm kullanıcılar</span>
                       </label>
                     </div>
@@ -1141,7 +1405,9 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
                 <Users size={40} className="text-orange-600 animate-pulse" />
               </div>
 
-              <h1 className="text-2xl font-bold text-gray-900 mb-4">Uyumlu bir kişi arayışı devam ediyor</h1>
+              <h1 className="text-2xl font-bold text-gray-900 mb-4">
+                Uyumlu bir kişi arayışı devam ediyor
+              </h1>
 
               <div className="w-full max-w-xs mb-6">
                 <div className="bg-gray-200 rounded-full h-2">
@@ -1151,7 +1417,8 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
               </div>
 
               <p className="text-gray-600 text-sm">
-                Size uygun katılımcıları buluyoruz. Bu işlem birkaç dakika sürebilir.
+                Size uygun katılımcıları buluyoruz. Bu işlem birkaç dakika
+                sürebilir.
               </p>
             </div>
           )}
@@ -1159,68 +1426,71 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
           {/* Premium Screen */}
           {state === "premium" && (
             <div className="flex flex-col h-full">
+              {/* Header */}
               <div className="flex items-center p-6 border-b">
-                <Button variant="ghost" size="sm" onClick={() => onNavigate("profile")}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => onNavigate("profile")}
+                >
                   <ArrowLeft size={20} />
                 </Button>
                 <h1 className="text-xl font-semibold ml-4">Premium Üyelik</h1>
               </div>
 
-              <div className="flex-1 p-6 space-y-6">
+              {/* Scrollable Content */}
+              <div className="flex-1 overflow-y-auto p-6 space-y-6 pb-40">
                 <div className="text-center">
                   <div className="w-20 h-20 bg-gradient-to-br from-yellow-100 to-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Crown size={40} className="text-yellow-600" />
                   </div>
-                  <h2 className="text-2xl font-bold text-gray-900 mb-2">Premium'a Geçin</h2>
-                  <p className="text-gray-600 text-sm">Özel etkinliklere erişim kazanın ve daha iyi deneyim yaşayın</p>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                    Premium'a Geçin
+                  </h2>
+                  <p className="text-gray-600 text-sm">
+                    Özel etkinliklere erişim kazanın ve daha iyi deneyim yaşayın
+                  </p>
                 </div>
 
                 <Card className="p-6 border-2 border-yellow-200 bg-gradient-to-br from-yellow-50 to-orange-50">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-semibold text-gray-900">Premium Üyelik</h3>
+                    <h3 className="text-lg font-semibold text-gray-900">
+                      Premium Üyelik
+                    </h3>
                     <Badge className="bg-yellow-600 text-white">Popüler</Badge>
                   </div>
 
                   <div className="space-y-3 mb-6">
-                    <div className="flex items-center space-x-3">
-                      <CheckCircle size={16} className="text-green-600" />
-                      <span className="text-sm text-gray-700">Özel premium etkinliklere erişim</span>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <CheckCircle size={16} className="text-green-600" />
-                      <span className="text-sm text-gray-700">Öncelikli rezervasyon hakkı</span>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <CheckCircle size={16} className="text-green-600" />
-                      <span className="text-sm text-gray-700">Ücretsiz iptal imkanı</span>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <CheckCircle size={16} className="text-green-600" />
-                      <span className="text-sm text-gray-700">Özel sohbet odaları</span>
-                    </div>
+                    {[
+                      "Özel premium etkinliklere erişim",
+                      "Öncelikli rezervasyon hakkı",
+                      "Ücretsiz iptal imkanı",
+                      "Özel sohbet odaları",
+                    ].map((text, idx) => (
+                      <div key={idx} className="flex items-center space-x-3">
+                        <CheckCircle size={16} className="text-green-600" />
+                        <span className="text-sm text-gray-700">{text}</span>
+                      </div>
+                    ))}
                   </div>
 
                   <div className="text-center mb-6">
                     <div className="flex items-baseline justify-center space-x-2">
-                      <span className="text-3xl font-bold text-gray-900">₺49</span>
+                      <span className="text-3xl font-bold text-gray-900">
+                        ₺49
+                      </span>
                       <span className="text-gray-600">/ay</span>
                     </div>
-                    <p className="text-sm text-gray-500 mt-1">İlk ay ücretsiz</p>
+                    <p className="text-sm text-gray-500 mt-1">
+                      İlk ay ücretsiz
+                    </p>
                   </div>
-
-                  <Button
-                    onClick={() => {
-                      setIsPremium(true)
-                      onNavigate("events-available")
-                    }}
-                    className="w-full bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-700 hover:to-orange-700"
-                  >
-                    Premium'a Başla
-                  </Button>
                 </Card>
 
                 <div className="space-y-4">
-                  <h3 className="font-semibold text-gray-900">Premium Etkinlik Örnekleri</h3>
+                  <h3 className="font-semibold text-gray-900">
+                    Premium Etkinlik Örnekleri
+                  </h3>
 
                   {mockEvents
                     .filter((event) => event.isPremium)
@@ -1229,7 +1499,9 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
                         <div className="flex justify-between items-start">
                           <div className="flex-1">
                             <div className="flex items-center space-x-2 mb-2">
-                              <h4 className="font-semibold text-gray-900">{event.title}</h4>
+                              <h4 className="font-semibold text-gray-900">
+                                {event.title}
+                              </h4>
                               <Crown size={16} className="text-yellow-600" />
                             </div>
                             <div className="flex items-center space-x-4 text-sm text-gray-600">
@@ -1248,23 +1520,39 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
                             </div>
                           </div>
                           <div className="text-right">
-                            <p className="font-semibold text-orange-600">{event.price}</p>
+                            <p className="font-semibold text-orange-600">
+                              {event.price}
+                            </p>
                           </div>
                         </div>
                       </Card>
                     ))}
                 </div>
+              </div>
 
-                <div className="text-center">
-                  <Button variant="outline" onClick={() => onNavigate("profile")} className="w-full">
-                    Şimdi değil
-                  </Button>
-                </div>
+              {/* Fixed Footer Buttons */}
+              <div className="p-6 border-t bg-white space-y-3">
+                <Button
+                  onClick={() => {
+                    setIsPremium(true);
+                    onNavigate("events-available");
+                  }}
+                  className="w-full bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-700 hover:to-orange-700"
+                >
+                  Premium'a Başla
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => onNavigate("profile")}
+                  className="w-full"
+                >
+                  Şimdi değil
+                </Button>
               </div>
             </div>
           )}
         </motion.div>
       </AnimatePresence>
     </div>
-  )
+  );
 }

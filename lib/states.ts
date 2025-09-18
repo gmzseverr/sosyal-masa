@@ -1,5 +1,6 @@
 export type AppState =
   | "landing"
+  | "events-list"
   | "test-start" // Timeleft-like pre-quiz intro
   | "test-step" // step-by-step quiz (multiple steps)
   | "login"
@@ -19,6 +20,7 @@ export type AppState =
   | "settings"
   | "privacy"
   | "premium" // premium membership upsell & special events
+  | "roadmap";
 
 export const STATE_TO_SECTION_ID: Record<AppState, string> = {
   landing: "problem",
@@ -41,7 +43,8 @@ export const STATE_TO_SECTION_ID: Record<AppState, string> = {
   settings: "team",
   privacy: "team",
   premium: "premium",
-}
+  roadmap: "roadmap",
+};
 
 export const SECTION_ID_TO_STATE: Record<string, AppState> = {
   problem: "landing",
@@ -52,21 +55,22 @@ export const SECTION_ID_TO_STATE: Record<string, AppState> = {
   premium: "premium",
   team: "profile",
   cta: "landing",
-}
+  roadmap: "roadmap",
+};
 
 export interface MockEvent {
-  id: string
-  title: string
-  date: string
-  time: string
-  location: string
-  price: string
-  badge?: string
-  spotsLeft?: number
-  restaurant?: string
-  participants?: string[]
-  isPremium?: boolean
-  isJoined?: boolean
+  id: string;
+  title: string;
+  date: string;
+  time: string;
+  location: string;
+  price: string;
+  badge?: string;
+  spotsLeft?: number;
+  restaurant?: string;
+  participants?: string[];
+  isPremium?: boolean;
+  isJoined?: boolean;
 }
 
 export const mockEvents: MockEvent[] = [
@@ -116,7 +120,7 @@ export const mockEvents: MockEvent[] = [
     restaurant: "Alaçatı Şarap Evi",
     participants: ["Murat S.", "Elif K."],
   },
-]
+];
 
 export const mockJoinedEvents: MockEvent[] = [
   {
@@ -130,15 +134,15 @@ export const mockJoinedEvents: MockEvent[] = [
     participants: ["Ali R.", "Fatma S."],
     isJoined: true,
   },
-]
+];
 
 export interface Conversation {
-  id: string
-  title: string
-  lastMessage: string
-  time: string
-  unreadCount?: number
-  eventTitle?: string
+  id: string;
+  title: string;
+  lastMessage: string;
+  time: string;
+  unreadCount?: number;
+  eventTitle?: string;
 }
 
 export const mockConversations: Conversation[] = [
@@ -157,14 +161,14 @@ export const mockConversations: Conversation[] = [
     unreadCount: 2,
     eventTitle: "17 Ara - Hafta Sonu Brunch",
   },
-]
+];
 
 export interface ChatMessage {
-  id: string
-  sender: string
-  message: string
-  time: string
-  isOwn?: boolean
+  id: string;
+  sender: string;
+  message: string;
+  time: string;
+  isOwn?: boolean;
 }
 
 export const mockChatMessages: ChatMessage[] = [
@@ -193,13 +197,13 @@ export const mockChatMessages: ChatMessage[] = [
     time: "18:52",
     isOwn: true,
   },
-]
+];
 
 export interface TestStep {
-  id: number
-  question: string
-  options: string[]
-  selectedOption?: string
+  id: number;
+  question: string;
+  options: string[];
+  selectedOption?: string;
 }
 
 export const mockTestSteps: TestStep[] = [
@@ -218,4 +222,4 @@ export const mockTestSteps: TestStep[] = [
     question: "Hangi zaman dilimlerini tercih edersiniz?",
     options: ["Öğle arası", "Akşam saatleri", "Hafta sonu"],
   },
-]
+];
