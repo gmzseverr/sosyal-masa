@@ -1,7 +1,8 @@
+// src/components/StepNav.js (veya .tsx)
+
 "use client";
 
-import type React from "react";
-
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import type { AppState } from "@/lib/states";
@@ -15,6 +16,7 @@ import {
   MessageCircle,
   User,
   Rocket,
+  Search, // Yeni icon: Keşfet için
 } from "lucide-react";
 
 interface StepNavProps {
@@ -35,14 +37,14 @@ const keySteps: {
   { state: "chat", label: "Sohbet", icon: MessageCircle },
   { state: "profile", label: "Profil", icon: User },
   { state: "roadmap", label: "Yol Haritası", icon: Rocket },
+
+  { state: "discover", label: "Keşfet", icon: Search },
 ];
 
 export function StepNav({ currentState, onNavigate }: StepNavProps) {
   const handleStepClick = (state: AppState) => {
-    // Navigate to the app state
     onNavigate(state);
 
-    // Also scroll to the corresponding section
     const sectionId = STATE_TO_SECTION_ID[state];
     const element = document.getElementById(sectionId);
     if (element) {

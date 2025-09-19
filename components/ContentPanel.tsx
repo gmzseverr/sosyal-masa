@@ -294,7 +294,13 @@ export function ContentPanel({ currentState }: ContentPanelProps) {
             id="experience"
             title="Deneyim"
             icon={Heart}
-            isActive
+            isActive={[
+              "matching",
+              "match-found",
+              "chat-home",
+              "chat",
+              "events-list",
+            ].includes(currentState)}
             className="absolute inset-0"
           >
             <div className="space-y-6">
@@ -424,7 +430,7 @@ export function ContentPanel({ currentState }: ContentPanelProps) {
         )}
         {/* Market Section */}
 
-        {currentState === "events-list" && (
+        {currentState === "discover" && (
           <SectionCard
             id="market"
             title="Pazar"

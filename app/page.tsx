@@ -27,7 +27,7 @@ export default function Home() {
           />
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-8 max-w-7xl mx-auto">
+        <div className="flex flex-col items-start lg:flex-row gap-8 max-w-7xl mx-auto">
           <div className="w-full lg:w-3/4 order-2 lg:order-1">
             <ContentPanel currentState={currentState} />
           </div>

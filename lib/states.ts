@@ -20,7 +20,8 @@ export type AppState =
   | "settings"
   | "privacy"
   | "premium" // premium membership upsell & special events
-  | "roadmap";
+  | "roadmap"
+  | "discover";
 
 export const STATE_TO_SECTION_ID: Record<AppState, string> = {
   landing: "problem",
@@ -48,6 +49,8 @@ export const STATE_TO_SECTION_ID: Record<AppState, string> = {
 
 export const SECTION_ID_TO_STATE: Record<string, AppState> = {
   problem: "landing",
+  "events-list": "available-events", // 👈 burası önemli
+  "event-detail": "event-detail",
   solution: "test-start",
   flow: "events-available",
   experience: "match-found",
@@ -56,6 +59,7 @@ export const SECTION_ID_TO_STATE: Record<string, AppState> = {
   team: "profile",
   cta: "landing",
   roadmap: "roadmap",
+  discover: "discover",
 };
 
 export interface MockEvent {

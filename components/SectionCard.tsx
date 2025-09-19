@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react"; // tip değil, gerçek import
+import React from "react";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import type { LucideIcon } from "lucide-react";
@@ -11,12 +11,11 @@ interface SectionCardProps {
   children: React.ReactNode;
   icon: LucideIcon;
   isActive: boolean;
-  className?: string; // optional className
 }
 
 const sectionVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0 },
+  hidden: { opacity: 0, y: 20, position: "absolute" }, // Pasifken gizle ve üst üste bindir
+  visible: { opacity: 1, y: 0, position: "relative" }, // Aktifken görünür yap
 };
 
 export function SectionCard({
@@ -25,20 +24,17 @@ export function SectionCard({
   children,
   icon: Icon,
   isActive,
-  className, // burayı ekledik
 }: SectionCardProps) {
   return (
     <motion.section
       id={id}
       variants={sectionVariants}
       initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-100px" }}
+      animate={isActive ? "visible" : "hidden"}
       transition={{ duration: 0.6 }}
-      className={`min-h-screen flex items-center py-16 ${className ?? ""}`} // className artık çalışır
     >
       <Card
-        className={`w-full p-8 lg:p-12 transition-all duration-300 ${
+        className={`w-full mt-10 p-8 lg:p-12 transition-all duration-300 ${
           isActive ? "ring-2 ring-orange-200 shadow-lg" : "shadow-md"
         }`}
       >
