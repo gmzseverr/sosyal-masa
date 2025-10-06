@@ -1,4 +1,7 @@
 export type AppState =
+  | "onboarding"
+  | "splash"
+  | "onboarding-test"
   | "landing"
   | "events-list"
   | "test-start" // Timeleft-like pre-quiz intro
@@ -49,8 +52,7 @@ export const STATE_TO_SECTION_ID: Record<AppState, string> = {
 
 export const SECTION_ID_TO_STATE: Record<string, AppState> = {
   problem: "landing",
-  "events-list": "available-events", // 👈 burası önemli
-  "event-detail": "event-detail",
+
   solution: "test-start",
   flow: "events-available",
   experience: "match-found",

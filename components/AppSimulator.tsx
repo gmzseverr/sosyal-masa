@@ -41,12 +41,19 @@ import {
   mockTestSteps,
   type ChatMessage,
 } from "@/lib/states";
+import Onboarding from "./app-screens/Onboarding";
+import SplashScreen from "./app-screens/SplashScreen";
+import OnboardingTest from "./app-screens/OnboardingTest";
+import PersonalityTest from "./app-screens/PersonalityTest";
+import LandingScreen from "./app-screens/LandingScreen";
+
+import LoginScreen from "./app-screens/LoginScreen";
+import MatchingScreen from "./app-screens/MatchingScreen";
 
 interface AppSimulatorProps {
   state: AppState;
   onNavigate: (state: AppState) => void;
 }
-
 export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [chatMessages, setChatMessages] =
@@ -165,276 +172,30 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
           transition={{ duration: 0.2, ease: "easeInOut" }}
           className="w-full h-full"
         >
-          {/* Landing Screen */}
-          {state === "landing" && (
-            <div className="flex flex-col items-center justify-center h-full p-6 bg-gradient-to-br from-orange-50 to-amber-50">
-              <motion.div
-                className="text-center space-y-6"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-              >
-                <motion.div className="w-20 h-20 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-float">
-                  <span className="text-3xl">🍽️</span>
-                </motion.div>
-                <h1 className="text-2xl font-bold text-gray-900 leading-tight text-balance">
-                  Haftalık beraberlik dozunuz.
-                </h1>
-                <p className="text-gray-600 text-sm text-balance">
-                  Yeni insanlarla tanışın, güzel sohbetler edin
-                </p>
-                <div className="space-y-3 w-full max-w-xs">
-                  <Button
-                    onClick={() => onNavigate("test-start")}
-                    className="w-full bg-orange-600 hover:bg-orange-700 transition-all duration-200 hover:scale-105"
-                  >
-                    Başlayalım
-                  </Button>
-                  <Button
-                    onClick={() => onNavigate("login")}
-                    variant="outline"
-                    className="w-full hover:bg-orange-50 border-orange-200 transition-all duration-200"
-                  >
-                    Giriş Yap
-                  </Button>
-                </div>
-              </motion.div>
-            </div>
+          {/* Onboarding Screen */}
+          {state === "onboarding" && (
+            <Onboarding onNext={() => onNavigate("splash")} />
           )}
 
-          {/* Test Start Screen */}
+          {/* SplashScreen */}
+          {state === "splash" && (
+            <SplashScreen onFinish={() => onNavigate("onboarding-test")} />
+          )}
+
+          {/* OnboardingTest */}
+          {state === "onboarding-test" && (
+            <OnboardingTest onNavigate={onNavigate} />
+          )}
+
+          {/* PersonalityTest */}
           {state === "test-start" && (
-            <div className="flex flex-col items-center justify-center h-full p-6 bg-gradient-to-br from-blue-50 to-indigo-50">
-              <motion.div
-                className="text-center space-y-6"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-              >
-                <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Star size={40} className="text-blue-600" />
-                </div>
-                <h1 className="text-2xl font-bold text-gray-900 leading-tight text-balance">
-                  Sizi daha iyi tanıyalım
-                </h1>
-                <p className="text-gray-600 text-sm text-balance">
-                  Size en uygun masaları bulabilmemiz için birkaç soruya yanıt
-                  verin
-                </p>
-                <Button
-                  onClick={() => onNavigate("test-step")}
-                  className="w-full max-w-xs bg-blue-600 hover:bg-blue-700 transition-all duration-200 hover:scale-105"
-                >
-                  Teste Başla
-                </Button>
-                <Button
-                  onClick={() => onNavigate("landing")}
-                  variant="ghost"
-                  className="w-full max-w-xs text-gray-500"
-                >
-                  Şimdi değil
-                </Button>
-              </motion.div>
-            </div>
+            <PersonalityTest onNavigate={onNavigate} />
           )}
 
-          {/* Test Step Screen */}
-          {state === "test-step" && (
-            <div className="flex flex-col h-full">
-              <div className="flex items-center p-6 border-b">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => onNavigate("test-start")}
-                >
-                  <ArrowLeft size={20} />
-                </Button>
-                <div className="flex-1 mx-4">
-                  <div className="bg-gray-200 rounded-full h-2">
-                    <div
-                      className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-                      style={{
-                        width: `${
-                          ((currentTestStep + 1) / mockTestSteps.length) * 100
-                        }%`,
-                      }}
-                    ></div>
-                  </div>
-                  <p className="text-sm text-gray-600 mt-2 text-center">
-                    {currentTestStep + 1} / {mockTestSteps.length}
-                  </p>
-                </div>
-              </div>
+          {state === "matching" && <MatchingScreen onNavigate={onNavigate} />}
 
-              <div className="flex-1 p-6">
-                <h1 className="text-xl font-bold text-gray-900 mb-6">
-                  {mockTestSteps[currentTestStep]?.question}
-                </h1>
-
-                <div className="space-y-3">
-                  {mockTestSteps[currentTestStep]?.options.map(
-                    (option, index) => (
-                      <Button
-                        key={index}
-                        variant={
-                          testAnswers[currentTestStep] === option
-                            ? "default"
-                            : "outline"
-                        }
-                        className={`w-full justify-start text-left h-auto p-4 ${
-                          testAnswers[currentTestStep] === option
-                            ? "bg-blue-600 hover:bg-blue-700"
-                            : "hover:bg-blue-50"
-                        }`}
-                        onClick={() => handleTestAnswer(option)}
-                      >
-                        {option}
-                      </Button>
-                    )
-                  )}
-                </div>
-              </div>
-
-              <div className="p-6 border-t flex justify-between">
-                <Button
-                  variant="outline"
-                  onClick={prevTestStep}
-                  disabled={currentTestStep === 0}
-                  className="flex items-center bg-transparent"
-                >
-                  <ArrowLeft size={16} className="mr-2" />
-                  Geri
-                </Button>
-                <Button
-                  onClick={nextTestStep}
-                  disabled={!testAnswers[currentTestStep]}
-                  className="bg-blue-600 hover:bg-blue-700 flex items-center"
-                >
-                  {currentTestStep === mockTestSteps.length - 1
-                    ? "Bitir"
-                    : "İleri"}
-                  <ArrowRight size={16} className="ml-2" />
-                </Button>
-              </div>
-            </div>
-          )}
-
-          {/* Login Screen */}
-          {state === "login" && (
-            <div className="flex flex-col h-full p-6">
-              <div className="flex items-center mb-6">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => onNavigate("landing")}
-                  className="hover:bg-gray-100 transition-colors duration-200"
-                >
-                  <ArrowLeft size={20} />
-                </Button>
-                <h1 className="text-xl font-semibold ml-4">Giriş Yap</h1>
-              </div>
-
-              <div className="flex-1 space-y-4">
-                <div>
-                  <label className="text-sm font-medium text-gray-700">
-                    E-posta
-                  </label>
-                  <Input
-                    type="email"
-                    placeholder="ornek@email.com"
-                    className="mt-1 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-sm font-medium text-gray-700">
-                    Şifre
-                  </label>
-                  <div className="relative mt-1">
-                    <Input
-                      type={showPassword ? "text" : "password"}
-                      placeholder="••••••••"
-                      className="focus:ring-orange-500 focus:border-orange-500 transition-all duration-200"
-                    />
-                    <button
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 transition-colors duration-200"
-                    >
-                      {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                    </button>
-                  </div>
-                </div>
-
-                <Button
-                  onClick={() => onNavigate("home")}
-                  className="w-full bg-orange-600 hover:bg-orange-700 mt-6 transition-all duration-200 hover:scale-105"
-                >
-                  Giriş Yap
-                </Button>
-              </div>
-            </div>
-          )}
-
-          {/* Register Screen */}
-          {state === "register" && (
-            <div className="flex flex-col h-full p-6">
-              <div className="flex items-center mb-6">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => onNavigate("landing")}
-                >
-                  <ArrowLeft size={20} />
-                </Button>
-                <h1 className="text-xl font-semibold ml-4">Kayıt Ol</h1>
-              </div>
-
-              <div className="flex-1 space-y-4">
-                <div>
-                  <label className="text-sm font-medium text-gray-700">
-                    Ad Soyad
-                  </label>
-                  <Input placeholder="Adınız Soyadınız" className="mt-1" />
-                </div>
-
-                <div>
-                  <label className="text-sm font-medium text-gray-700">
-                    E-posta
-                  </label>
-                  <Input
-                    type="email"
-                    placeholder="ornek@email.com"
-                    className="mt-1"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-sm font-medium text-gray-700">
-                    Şifre
-                  </label>
-                  <div className="relative mt-1">
-                    <Input
-                      type={showPassword ? "text" : "password"}
-                      placeholder="••••••••"
-                    />
-                    <button
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2"
-                    >
-                      {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                    </button>
-                  </div>
-                </div>
-
-                <Button
-                  onClick={() => onNavigate("home")}
-                  className="w-full bg-orange-600 hover:bg-orange-700 mt-6"
-                >
-                  Kayıt Ol
-                </Button>
-              </div>
-            </div>
-          )}
+          {/* Register */}
+          {state === "login" && <LoginScreen onNavigate={onNavigate} />}
 
           {/* Home Screen */}
           {state === "home" && (
@@ -1394,31 +1155,6 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
                   </div>
                 </div>
               </div>
-            </div>
-          )}
-
-          {/* Matching Screen */}
-          {state === "matching" && (
-            <div className="flex flex-col items-center justify-center h-full p-6 text-center">
-              <div className="w-24 h-24 bg-orange-100 rounded-full flex items-center justify-center mb-6">
-                <Users size={40} className="text-orange-600 animate-pulse" />
-              </div>
-
-              <h1 className="text-2xl font-bold text-gray-900 mb-4">
-                Uyumlu bir kişi arayışı devam ediyor
-              </h1>
-
-              <div className="w-full max-w-xs mb-6">
-                <div className="bg-gray-200 rounded-full h-2">
-                  <div className="bg-orange-600 h-2 rounded-full w-3/4 animate-pulse"></div>
-                </div>
-                <p className="text-sm text-gray-600 mt-2">%75 tamamlandı</p>
-              </div>
-
-              <p className="text-gray-600 text-sm">
-                Size uygun katılımcıları buluyoruz. Bu işlem birkaç dakika
-                sürebilir.
-              </p>
             </div>
           )}
 

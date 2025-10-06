@@ -29,7 +29,7 @@ const keySteps: {
   label: string;
   icon: React.ComponentType<any>;
 }[] = [
-  { state: "landing", label: "Başlangıç", icon: Home },
+  { state: "onboarding", label: "Başlangıç", icon: Home },
   { state: "events-list", label: "Etkinlikler", icon: Calendar },
   { state: "event-detail", label: "Detay", icon: FileText },
   { state: "payment", label: "Ödeme", icon: CreditCard },

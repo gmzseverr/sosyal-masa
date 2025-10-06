@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { AppSimulator } from "./AppSimulator"
-import { StepNav } from "./StepNav"
-import type { AppState } from "@/lib/states"
+import { motion } from "framer-motion";
+import { AppSimulator } from "./AppSimulator";
+import { StepNav } from "./StepNav";
+import type { AppState } from "@/lib/states";
 
 interface PhoneFrameProps {
-  currentState: AppState
-  onNavigate: (state: AppState) => void
+  currentState: AppState;
+  onNavigate: (state: AppState) => void;
 }
 
 export function PhoneFrame({ currentState, onNavigate }: PhoneFrameProps) {
@@ -41,28 +41,12 @@ export function PhoneFrame({ currentState, onNavigate }: PhoneFrameProps) {
         <div className="absolute -left-1 top-24 w-1 h-16 bg-gray-700 rounded-l-sm" />
       </motion.div>
 
-      {/* Step Navigation */}
-      <StepNav currentState={currentState} onNavigate={onNavigate} />
-
-      <motion.div className="text-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
-        <p className="text-sm text-gray-600 mb-1">Aktif Ekran</p>
-        <div className="px-3 py-1 bg-orange-100 text-orange-800 rounded-full text-xs font-medium">
-          {currentState === "landing" && "Başlangıç"}
-          {currentState === "login" && "Giriş"}
-          {currentState === "register" && "Kayıt"}
-          {currentState === "home" && "Ana Sayfa"}
-          {currentState === "events-list" && "Etkinlikler"}
-          {currentState === "event-detail" && "Etkinlik Detayı"}
-          {currentState === "payment" && "Ödeme"}
-          {currentState === "match-found" && "Eşleşme Bulundu"}
-          {currentState === "matching" && "Eşleştirme"}
-          {currentState === "chat" && "Sohbet"}
-          {currentState === "profile" && "Profil"}
-          {currentState === "notifications" && "Bildirimler"}
-          {currentState === "settings" && "Ayarlar"}
-          {currentState === "privacy" && "Gizlilik"}
-        </div>
-      </motion.div>
+      <motion.div
+        className="text-center"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.3 }}
+      ></motion.div>
     </div>
-  )
+  );
 }

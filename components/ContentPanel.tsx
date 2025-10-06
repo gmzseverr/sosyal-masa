@@ -294,13 +294,7 @@ export function ContentPanel({ currentState }: ContentPanelProps) {
             id="experience"
             title="Deneyim"
             icon={Heart}
-            isActive={[
-              "matching",
-              "match-found",
-              "chat-home",
-              "chat",
-              "events-list",
-            ].includes(currentState)}
+            isActive
             className="absolute inset-0"
           >
             <div className="space-y-6">
