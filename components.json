@@ -3,6 +3,7 @@
   "style": "new-york",
   "rsc": true,
   "tsx": true,
+  "installer": "npm",
   "tailwind": {
     "config": "",
     "css": "app/globals.css",

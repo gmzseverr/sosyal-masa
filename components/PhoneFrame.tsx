@@ -1,8 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
+
 import { AppSimulator } from "./AppSimulator";
-import { StepNav } from "./StepNav";
 import type { AppState } from "@/lib/states";
 
 interface PhoneFrameProps {
@@ -47,6 +47,7 @@ export function PhoneFrame({ currentState, onNavigate }: PhoneFrameProps) {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.3 }}
       ></motion.div>
+      
     </div>
   );
 }

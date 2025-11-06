@@ -8,7 +8,8 @@ export type AppState =
   | "test-step" // step-by-step quiz (multiple steps)
   | "login"
   | "register"
-  | "home" // joinable dinners (only date/day/time shown)
+  | "home"
+  |"events" // joinable dinners (only date/day/time shown)
   | "events-available" // public list of joinable events (pre-payment)
   | "events-joined" // my registered events
   | "event-detail" // join form (languages/budget/diet), price visible
@@ -24,7 +25,8 @@ export type AppState =
   | "privacy"
   | "premium" // premium membership upsell & special events
   | "roadmap"
-  | "discover";
+  | "discover"
+  |"premium";
 
 export const STATE_TO_SECTION_ID: Record<AppState, string> = {
   landing: "problem",

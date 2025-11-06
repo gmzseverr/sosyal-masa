@@ -3,11 +3,10 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { AppSimulator } from "@/components/AppSimulator";
+import { AppSimulator } from "./AppSimulator";
 import type { AppState } from "@/lib/states";
 import {
   Home,
-  Calendar,
   FileText,
   CreditCard,
   PartyPopper,

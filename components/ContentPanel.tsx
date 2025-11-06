@@ -17,6 +17,7 @@ import {
   MessageCircle,
   Badge,
 } from "lucide-react";
+
 import type { AppState } from "@/lib/states";
 import { Card } from "./ui/card";
 

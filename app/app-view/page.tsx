@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { AppSimulator, type AppState } from "@/components/AppSimulator";
+import { AppSimulator } from "@/components/AppSimulator";
+import type { AppState } from "@/lib/states";
 
 export default function AppViewPage() {
-  const [state, setState] = useState<AppState>("onboarding"); // başlangıç: onboarding
+  const [state, setState] = useState<AppState>("onboarding"); 
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-6">

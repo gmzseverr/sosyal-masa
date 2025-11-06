@@ -10,21 +10,44 @@ interface LoginScreenProps {
   onNavigate: (state: string) => void;
 }
 
+// Demo için sabit kullanıcı bilgileri
+const DEMO_EMAIL = "mert.yilmaz@demo.com"; 
+const DEMO_PASSWORD = "123"; 
+
 export default function LoginScreen({ onNavigate }: LoginScreenProps) {
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState<string | null>(null); // Hata mesajı için state
   const [form, setForm] = useState({
-    name: "",
+    email: "", // 'name' yerine 'email' olarak değiştirildi
     password: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+    setError(null); // Kullanıcı yazmaya başladığında hatayı temizle
   };
 
   const handleLogin = () => {
-    if (form.name && form.password) {
-      console.log("Login data:", form);
-      onNavigate("login");
+    setError(null);
+
+    // Form alanlarının doluluğunu kontrol et
+    if (!form.email || !form.password) {
+      setError("Lütfen tüm alanları doldurun.");
+      return;
+    }
+
+    // DEMO Kimlik Doğrulama Kontrolü (Case-insensitive email)
+    if (
+      form.email.toLowerCase() === DEMO_EMAIL &&
+      form.password === DEMO_PASSWORD
+    ) {
+      console.log("Demo Girişi Başarılı. Yönlendiriliyor...");
+      // Giriş başarılı: Anasayfaya yönlendir (Sizin state yapınızda bu "landing" veya "home" olabilir)
+      onNavigate("landing");
+    } else {
+      // Giriş başarısız
+      setError("Hatalı e-posta veya şifre.");
+      console.log("Giriş Başarısız.");
     }
   };
 
@@ -48,9 +71,10 @@ export default function LoginScreen({ onNavigate }: LoginScreenProps) {
         transition={{ duration: 0.3 }}
       >
         <FloatingInput
-          name="name"
-          label="Ad Soyad"
-          value={form.name}
+          name="email" // 'name' -> 'email'
+          label="E-posta" // 'Ad Soyad' -> 'E-posta'
+          type="email"
+          value={form.email}
           onChange={handleChange}
         />
 
@@ -72,11 +96,22 @@ export default function LoginScreen({ onNavigate }: LoginScreenProps) {
           </button>
         </div>
 
+        {/* Hata Mesajı */}
+        {error && (
+          <motion.p
+            className="text-red-500 text-xs mt-2"
+            initial={{ opacity: 0, y: -5 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            {error}
+          </motion.p>
+        )}
+
         {/* Şifremi unuttum */}
         <div className="w-full flex justify-end -mt-2 mb-2">
           <span
             className="text-gray-600 text-xs cursor-pointer hover:underline"
-            onClick={() => console.log("Şifremi unuttum tıklandı")}
+            onClick={() => onNavigate("forgot-password")} // Yeni bir state'e yönlendirilebilir
           >
             Şifrenizi mi unuttunuz?
           </span>
@@ -96,7 +131,7 @@ export default function LoginScreen({ onNavigate }: LoginScreenProps) {
             size="sm"
             className="w-full flex items-center justify-center gap-2 text-xs py-1"
           >
-            {/* Google SVG */}
+            {/* Google SVG (clipPath düzeltildi) */}
             <svg
               width="20"
               height="20"
@@ -105,7 +140,7 @@ export default function LoginScreen({ onNavigate }: LoginScreenProps) {
               xmlns="http://www.w3.org/2000/svg"
             >
               {" "}
-              <g clip-path="url(#clip0_91_2236)">
+              <g clipPath="url(#clip0_91_2236)">
                 {" "}
                 <path
                   d="M9.99985 8.18188V12.0546H15.3817C15.1453 13.3001 14.4361 14.3547 13.3725 15.0637L16.618 17.5819C18.5089 15.8365 19.5998 13.2729 19.5998 10.2274C19.5998 9.51836 19.5362 8.83648 19.418 8.18199L9.99985 8.18188Z"
