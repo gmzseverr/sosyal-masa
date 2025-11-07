@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 export default function Onboarding({ onNext }: OnboardingProps) {
   useEffect(() => {
-    const timer = setTimeout(onNext, 2000); // 2 saniye sonra splash’e geç
+    const timer = setTimeout(onNext, 2000); 
     return () => clearTimeout(timer);
   }, [onNext]);
 

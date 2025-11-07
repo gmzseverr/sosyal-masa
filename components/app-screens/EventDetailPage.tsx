@@ -2,35 +2,19 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import {
-  ChevronLeft,
   Calendar,
   Clock,
   MapPin,
-  AlertCircle,
-  Users,
-  MessageSquare,
   ArrowLeft,
+
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
+import { EventData} from "@/lib/events"; 
 import { Checkbox } from "../ui/checkbox";
 
 interface EventDetailPageProps {
-  event?: {
-    title: string;
-    image: string;
-    date: string;
-    time: string;
-    location: string;
-    description: string;
-    price: string;
-    rules: {
-      icon: any; 
-      title: string;
-      description: string;
-    }[];
-  };
-  onNavigate: (state: string) => void; 
+  event?: EventData;
+  onNavigate: (state: string) => void;
 }
 
 const BOTTOM_MENU_HEIGHT = 70;
@@ -64,25 +48,32 @@ export default function EventDetailPage({
   };
 
   return (
-    <div className="w-full h-screen bg-white flex flex-col overflow-hidden">
-      {/* HEADER */}
-      <div className="flex-shrink-0 px-4 py-3 flex items-center bg-white border-b border-gray-100 z-10">
+    <div className="w-full h-full bg-white flex flex-col ">
+      {/* Header */}
+      <motion.header
+        className="sticky top-0 bg-white px-4 py-4 border-b border-gray-100 z-10 shadow-sm"
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.3 }}
+      >
+        {/* Başlık Satırı */}
+        <div className="flex items-center justify-start gap-10 mb-4">
         <Button
           variant="ghost"
           size="icon"
-          onClick={() => onNavigate("events-available")}
+          onClick={() => onNavigate("home")}
           className="text-white rounded-full h-10 w-10 hover:bg-gray-100"
         >
        <ArrowLeft size={28} className="font-extabold text-white bg-orange-500 p-1 rounded-full" />
         </Button>
-        <span className="text-lg font-semibold text-gray-900 absolute left-1/2 transform -translate-x-1/2">
-          Etkinliğe Katıl
-        </span>
-      </div>
-
+         
+          <h1 className="text-xl text-center font-bold text-gray-900">Etkinliğe Katıl</h1>
+       
+        </div>
+        </motion.header>
       {/* SCROLLABLE CONTENT */}
       <div 
-        className="flex-1 overflow-y-auto"
+        className="flex-1 "
         style={{ paddingBottom: `${BOTTOM_MENU_HEIGHT}px` }}
       >
         {/* Görsel Alanı */}
@@ -277,8 +268,7 @@ export default function EventDetailPage({
             </Button>
           </motion.div>
 
-          {/* Spacing */}
-          <div className="h-4" />
+         
         </div>
       </div>
     </div>

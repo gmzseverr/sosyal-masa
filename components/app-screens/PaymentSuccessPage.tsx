@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { ChevronLeft, Calendar, Clock, MapPin, CheckCircle, Phone, Globe, CornerDownLeft, Map } from "lucide-react";
+import { ChevronLeft, Calendar, Clock, MapPin, CheckCircle, Phone, Globe, CornerDownLeft, Map, ArrowLeft } from "lucide-react";
 import { Button } from "../ui/button";
 
 // Varsayım: Bu arayüz, üst bileşenden gelecek event verisine ek olarak mekan detaylarını da içerir.
@@ -70,26 +70,30 @@ const getColor = (index: number) => {
 
   return (
     // Ana Kapsayıcı: Tam ekran ve dikey flex yapısı
-    <div className="w-full h-screen bg-white flex flex-col overflow-hidden">
+    <div className="w-full h-full bg-white flex flex-col ">
       
       {/* 1. HEADER (Başlık Çubuğu - Görselde 'Ödeme Başarılı' yazıyor) */}
-      <div className="flex-shrink-0 px-4 py-3 flex items-center bg-white border-b border-gray-200">
+      <motion.header
+        className="sticky top-0 bg-white px-4 py-4"
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.3 }}
+      >
+        {/* Başlık Satırı */}
+        <div className="flex items-center justify-start gap-10 mb-4">
         <Button
           variant="ghost"
           size="icon"
-          // Görselde sol üstte geri oku yok, ama kullanıcı akışı için bırakılabilir veya kaldırılabilir.
-          // onNavigate("events-available") // Eğer butonsuzsa direk anasayfaya gidebilir
-          className="text-gray-800 rounded-full h-10 w-10 hover:bg-gray-100 opacity-0 pointer-events-none" // Gizledik
+          onClick={() => onNavigate("home")}
+          className="text-white rounded-full h-10 w-10 hover:bg-gray-100"
         >
-          <ChevronLeft size={24} />
+       <ArrowLeft size={28} className="font-extabold text-white bg-orange-500 p-1 rounded-full" />
         </Button>
-        <span className="text-lg font-semibold text-gray-900 absolute left-1/2 transform -translate-x-1/2">
-          Ödeme Başarılı
-        </span>
-      </div>
-
+         
+        </div>
+        </motion.header>
       {/* 2. SCROLLABLE CONTENT (Kaydırılabilir İçerik) */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-6">
+      <div className="flex-1  p-4 space-y-6">
         
 
         <motion.div
@@ -222,8 +226,7 @@ const getColor = (index: number) => {
       </motion.div>
         
 
-        {/* Butonun sabitlenmesi için boşluk */}
-        <div className="h-20" /> 
+       
       </div>
       
    

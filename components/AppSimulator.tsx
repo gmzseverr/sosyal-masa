@@ -2,38 +2,15 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Switch } from "@/components/ui/switch";
 import {
-  ArrowLeft,
-  MapPin,
-  Clock,
-  Users,
-  Send,
   Home,
-  MessageCircle,
   Calendar,
   User,
- 
-  Bell,
-  Shield,
-  ChevronRight,
-  DollarSign,
-  Crown,
-  Star,
-  Filter,
-  CheckCircle,
   Search,
 } from "lucide-react";
 import type { AppState } from "@/lib/states";
 import {
   mockEvents,
-  mockJoinedEvents,
   mockChatMessages,
   mockConversations,
   mockTestSteps,
@@ -53,6 +30,7 @@ import PaymentSuccessPage from "./app-screens/PaymentSuccessPage";
 import ProfilePage from "./app-screens/ProfilePage";
 import PremiumUpgradePage from "./app-screens/PremiumUpgradePage";
 import DiscoverPage from "./app-screens/DiscoverPage";
+import { eventsData, EventData } from "@/lib/events";
 
 
 interface AppSimulatorProps {
@@ -61,21 +39,13 @@ interface AppSimulatorProps {
 }
 
 export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
-  const [showPassword, setShowPassword] = useState(false);
   const [chatMessages, setChatMessages] =
     useState<ChatMessage[]>(mockChatMessages);
   const [newMessage, setNewMessage] = useState("");
   const [selectedEvent, setSelectedEvent] = useState(mockEvents[0]);
-  const [selectedConversation, setSelectedConversation] = useState(
-    mockConversations[0]
-  );
   const [currentTestStep, setCurrentTestStep] = useState(0);
   const [testAnswers, setTestAnswers] = useState<Record<number, string>>({});
-  const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
-  const [selectedBudget, setSelectedBudget] = useState<number>(1);
-  const [isDiet, setIsDiet] = useState(false);
   const [isPremium, setIsPremium] = useState(false);
-  const [showPremiumEvents, setShowPremiumEvents] = useState(false);
 
   const handleSendMessage = () => {
     if (newMessage.trim()) {
@@ -94,29 +64,12 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
     }
   };
 
-  const handleTestAnswer = (answer: string) => {
-    setTestAnswers({ ...testAnswers, [currentTestStep]: answer });
-  };
 
-  const nextTestStep = () => {
-    if (currentTestStep < mockTestSteps.length - 1) {
-      setCurrentTestStep(currentTestStep + 1);
-    } else {
-      onNavigate("matching");
-      setTimeout(() => onNavigate("events-available"), 2000);
-    }
-  };
 
-  const prevTestStep = () => {
-    if (currentTestStep > 0) {
-      setCurrentTestStep(currentTestStep - 1);
-    }
-  };
-
-  const handleSelectEvent = (event: typeof mockEvents[0]) => {
+  const handleSelectEvent = (event: EventData) => {
     setSelectedEvent(event);
     onNavigate("event-detail");
-  };
+};
 
   // BottomTabBar'ı bu şekilde tutuyoruz.
   const BottomTabBar = ({ activeTab }: { activeTab: string }) => (
@@ -150,7 +103,6 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
         ].map((tab) => (
           <button
             key={tab.id}
-            // Etkinlikler sekmesi için özel state kontrolü
             onClick={() => onNavigate(tab.id === "events" ? "events-available" as AppState : tab.state)}
             className={`flex flex-col items-center space-y-1 p-2 rounded-lg transition-all duration-200 ${
               // Aktif sekme kontrolü
@@ -174,7 +126,7 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
   };
 
   // Hangi state'in BottomTabBar gerektirdiğini belirleyen helper
-  const requiresBottomBar = ["home","landing", "discover", "events-available", "profile"].includes(state as string);
+  const requiresBottomBar = ["home","landing", "discover", "events-available", "profile","event-detail"].includes(state as string);
 
   // BottomTabBar için aktif sekme adını belirleyen helper
   const activeTabName = state === "events-available" ? "events" : state;
@@ -221,11 +173,14 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
             {/* Register */}
             {state === "login" && <LoginScreen onNavigate={onNavigate} />}
 
-            {/* HomeScreen Ekranı */}
-            {(state === "home" || state === "landing") && (
-              <HomeScreen onNavigate={onNavigate} />
+         
+         {/* HomeScreen Ekranı */}
+         {(state === "home" || state === "landing") && (
+              <HomeScreen 
+                onNavigate={onNavigate} 
+                onSelectEvent={handleSelectEvent} // 💡 EKLE: Bu prop, hatayı çözer.
+              />
             )}
-
             {state === "events-available" && (
               <EventsPage 
                   onNavigate={onNavigate}

@@ -9,6 +9,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import EventCard from "../EventCard";
 import CalendarBox from "./CalenderBox";
 import TimeSlotSelector from "./TimeSlotSelector";
+import { eventsData, EventData } from "@/lib/events";
 
 
 // --- Constants ---
@@ -18,11 +19,18 @@ const AVATAR_SRC = "./1406be1bb3e531935af8e5cf6bc014fde3dbc82c.png";
 // --- Zaman Dilimleri ---
 type TimeSlot = "breakfast" | "lunch" | "dinner";
 
-function HomeScreen({ onNavigate }: { onNavigate: (state: string) => void }) {
-  const [selectedTimeSlot, setSelectedTimeSlot] = useState<TimeSlot>("lunch");
-  const [selectedHour, setSelectedHour] = useState<string | null>(null);
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
+function HomeScreen({ 
+  onNavigate, 
+  onSelectEvent 
+}: { 
+  onNavigate: (state: string) => void; 
+  onSelectEvent: (event: EventData) => void; 
+}) {
+const [selectedTimeSlot, setSelectedTimeSlot] = useState<TimeSlot>("lunch");
+const [selectedHour, setSelectedHour] = useState<string | null>(null);
+const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
 
+const visibleEvents = eventsData.slice(0, 2);
   // 🔸 Bottom Navigation için state
   const [activeTab, setActiveTab] = useState("home");
 
@@ -128,31 +136,30 @@ function HomeScreen({ onNavigate }: { onNavigate: (state: string) => void }) {
           </div>
         </motion.div>
 
-        {/* Etkinlikler */}
-        <h3 className="text-lg font-bold text-gray-700 mb-4 mt-6">
+     {/* Etkinlikler */}
+     <h3 className="text-lg font-bold text-gray-700 mb-4 mt-6">
           Yaklaşan Etkinlikler
         </h3>
         <div className="space-y-4">
-          <EventCard
-            title="Teknoloji Liderliyle Akşam Yemeği"
-            date="17 Temmuz Çarşamba"
-            time="19:00"
-            price="400 TL"
-            location="Bayraklı'da bir restoranda diğer teknoloji liderleriyle keyifli bir akşam yemeğine katılın"
-            attendeeCount={5}
-            onCardClick={() => onNavigate("event-detail")}
-          />
-
-          <EventCard
-            title="Girişimci Kurucularla Akşam Yemeği"
-            date="18 Temmuz Perşembe"
-            time="19:00"
-            location="Alsancak'taki bir restoranda diğer girişim kurucularıyla bir araya gelin."
-            price="300 TL"
-            attendeeCount={4}
-            onCardClick={() => onNavigate("event-detail")}
-          />
+          {/* 💡 DİNAMİK OLARAK YÜKLENEN İLK İKİ ETKİNLİK */}
+          {visibleEvents.map((event) => (
+            <EventCard
+              key={event.id}
+              title={event.title}
+              date={event.date}
+              time={event.time}
+              price={event.price}
+              location={event.description.substring(0, 70) + '...'} 
+              attendeeCount={5}
+              // 💡 onCardClick fonksiyonunu güncelliyoruz
+              onCardClick={() => {
+                onSelectEvent(event); // Seçilen etkinliği AppSimulator'a bildir
+                onNavigate("event-detail"); // Detay sayfasına geç
+              }}
+            />
+          ))}
         </div>
+      
 
         {/* --- Tüm Etkinlikleri Gör Butonu --- */}
         <div className="mt-8">

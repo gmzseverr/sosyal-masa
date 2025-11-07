@@ -1,47 +1,77 @@
+// Home.tsx (Güncellenmiş Versiyon)
 "use client";
-
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useCallback } from "react";
 import { PhoneFrame } from "@/components/PhoneFrame";
 import { ContentPanel } from "@/components/ContentPanel";
 import { StepNav } from "@/components/StepNav";
+import { motion } from "framer-motion";
 import {
-  type AppState,
-  STATE_TO_SECTION_ID,
-  SECTION_ID_TO_STATE,
+type AppState,
+// ... diğer import'lar
 } from "@/lib/states";
-
 export default function Home() {
-  const [currentState, setCurrentState] = useState<AppState>("landing");
-
-  const handlePhoneNavigate = useCallback((newState: AppState) => {
-    setCurrentState(newState);
-  }, []);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex justify-center mb-8">
-          <StepNav
-            currentState={currentState}
-            onNavigate={handlePhoneNavigate}
-          />
-        </div>
-
-        <div className="flex flex-col items-start lg:flex-row gap-8 max-w-7xl mx-auto">
-          <div className="w-full lg:w-3/4 order-2 lg:order-1">
+const [currentState, setCurrentState] = useState<AppState>("landing");
+// YOL HARİTASI KONTROLÜ
+const isRoadmapFullScreen = currentState === "roadmap"; 
+const handlePhoneNavigate = useCallback((newState: AppState) => {
+setCurrentState(newState);
+}, []);
+return (
+<div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50">
+<div className="container mx-auto px-4 py-8">
+<div className="flex justify-center mb-8">
+<StepNav
+currentState={currentState}
+onNavigate={handlePhoneNavigate}
+/>
+</div>
+{/* ANA FLEX KAPSAYICI */}
+<div className={`flex flex-col items- gap-8 mx-auto ${isRoadmapFullScreen ? 'lg:flex-row' : 'lg:flex-row'}`}>
+{/* CONTENT PANEL KISMI */}
+<motion.div
+            className={`
+              w-full 
+              ${isRoadmapFullScreen ? "lg:w-full" : "lg:w-3/4"}
+              transition-all duration-500 order-2 lg:order-1 
+            `}
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+          >
             <ContentPanel currentState={currentState} />
-          </div>
+          </motion.div>
+{/* TELEFON GÖRÜNÜMÜ KISMI */}
 
-          <div className="w-full lg:w-1/4 order-1 lg:order-2">
-            <div className="lg:sticky lg:top-8">
-              <PhoneFrame
-                currentState={currentState}
-                onNavigate={handlePhoneNavigate}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
+{!isRoadmapFullScreen && (
+            <motion.div
+              className={`
+                w-full lg:w-1/4 
+                order-1 lg:order-2 
+                flex justify-center lg:justify-end
+                transition-opacity duration-500
+              `}
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+            >
+              <div className="lg:sticky lg:top-8">
+              
+                <motion.div
+                 
+              
+                >
+                    <div className="">
+                        <PhoneFrame
+                            currentState={currentState}
+                            onNavigate={handlePhoneNavigate}
+                        />
+                    </div>
+                </motion.div>
+              </div>
+            </motion.div>
+          )}
+</div>
+</div>
+</div>
+);
+} 
