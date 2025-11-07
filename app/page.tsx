@@ -10,7 +10,7 @@ type AppState,
 // ... diğer import'lar
 } from "@/lib/states";
 export default function Home() {
-const [currentState, setCurrentState] = useState<AppState>("landing");
+const [currentState, setCurrentState] = useState<AppState>("onboarding");
 // YOL HARİTASI KONTROLÜ
 const isRoadmapFullScreen = currentState === "roadmap"; 
 const handlePhoneNavigate = useCallback((newState: AppState) => {

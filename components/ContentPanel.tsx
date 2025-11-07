@@ -262,7 +262,7 @@ export function ContentPanel({ currentState }: ContentPanelProps) {
         </p>
         <div className="inline-flex items-center gap-2 bg-orange-50 text-orange-800 px-5 py-2 rounded-full text-sm font-medium shadow-sm hover:shadow-md transition-shadow">
           <Star size={14} className="text-orange-600" />
-          <span>1 dakika · 5 soru</span>
+          <span>1 dakika · 6 soru</span>
         </div>
       </motion.div>
 
