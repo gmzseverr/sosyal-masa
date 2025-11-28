@@ -29,6 +29,7 @@ import ProfilePage from "./app-screens/ProfilePage";
 import PremiumUpgradePage from "./app-screens/PremiumUpgradePage";
 import DiscoverPage from "./app-screens/DiscoverPage";
 import { eventsData, EventData } from "@/lib/events";
+import RegisterScreen from "./app-screens/RegisterScreen";
 
 
 interface AppSimulatorProps {
@@ -166,8 +167,11 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
 
             {state === "matching" && <MatchingScreen onNavigate={onNavigate} />}
 
-            {/* Register */}
+            {/* Login */}
             {state === "login" && <LoginScreen onNavigate={onNavigate} />}
+
+            {/* Register */}
+            {state === "register" && <RegisterScreen onNavigate={onNavigate} />}
 
          
          {/* HomeScreen Ekranı */}
