@@ -12,8 +12,6 @@ import type { AppState } from "@/lib/states";
 import {
   mockEvents,
   mockChatMessages,
-  mockConversations,
-  mockTestSteps,
   type ChatMessage,
 } from "@/lib/states";
 import Onboarding from "./app-screens/Onboarding";
@@ -43,8 +41,6 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
     useState<ChatMessage[]>(mockChatMessages);
   const [newMessage, setNewMessage] = useState("");
   const [selectedEvent, setSelectedEvent] = useState(mockEvents[0]);
-  const [currentTestStep, setCurrentTestStep] = useState(0);
-  const [testAnswers, setTestAnswers] = useState<Record<number, string>>({});
   const [isPremium, setIsPremium] = useState(false);
 
   const handleSendMessage = () => {
@@ -125,10 +121,10 @@ export function AppSimulator({ state, onNavigate }: AppSimulatorProps) {
     exit: { opacity: 0, x: -20 },
   };
 
-  // Hangi state'in BottomTabBar gerektirdiğini belirleyen helper
+
   const requiresBottomBar = ["home","landing", "discover", "events-available", "profile","event-detail"].includes(state as string);
 
-  // BottomTabBar için aktif sekme adını belirleyen helper
+
   const activeTabName = state === "events-available" ? "events" : state;
 
 
